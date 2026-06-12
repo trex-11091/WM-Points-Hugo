@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "standalonewaypoints",
+  "version": "${version}",
+  "name": "Hugo WM Waypoints",
+  "description": "Shows imported waypoints without any extra mods and removes them automatically once the player reaches them.",
+  "authors": ["Hugo WM"],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.hugowm.waypoints.WaypointClientMod"
+    ]
+  },
+  "mixins": [
+    "hugowmwaypoints.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.6",
+    "minecraft": "1.21.10",
+    "java": ">=21"
+  }
+}

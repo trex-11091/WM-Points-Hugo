@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.hugowm.waypoints.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "DebugRendererMixin",
+    "InGameHudMixin",
+    "MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
