@@ -13,6 +13,7 @@ public final class WaypointSettingsScreen extends Screen {
 
     private ButtonWidget toggleButton;
     private ButtonWidget keyButton;
+    private ButtonWidget restartButton;
     private boolean waitingForKey;
 
     public WaypointSettingsScreen(WaypointClientMod mod, Screen parent) {
@@ -24,7 +25,7 @@ public final class WaypointSettingsScreen extends Screen {
     @Override
     protected void init() {
         int centerX = width / 2;
-        int startY = height / 2 - 42;
+        int startY = height / 2 - 52;
         int buttonWidth = 220;
         int buttonHeight = 20;
         int left = centerX - buttonWidth / 2;
@@ -39,14 +40,20 @@ public final class WaypointSettingsScreen extends Screen {
             refreshButtons();
         }).dimensions(left, startY + 26, buttonWidth, buttonHeight).build());
 
+        restartButton = addDrawableChild(ButtonWidget.builder(Text.literal("Strahlen neu laden"), button -> {
+            waitingForKey = false;
+            mod.restartBeams();
+            refreshButtons();
+        }).dimensions(left, startY + 52, buttonWidth, buttonHeight).build());
+
         addDrawableChild(ButtonWidget.builder(Text.literal("Taste auf V zurücksetzen"), button -> {
             waitingForKey = false;
             mod.setMenuKeyCode(GLFW.GLFW_KEY_V);
             refreshButtons();
-        }).dimensions(left, startY + 52, buttonWidth, buttonHeight).build());
+        }).dimensions(left, startY + 78, buttonWidth, buttonHeight).build());
 
         addDrawableChild(ButtonWidget.builder(Text.literal("Schließen"), button -> close())
-            .dimensions(left, startY + 96, buttonWidth, buttonHeight)
+            .dimensions(left, startY + 104, buttonWidth, buttonHeight)
             .build());
 
         refreshButtons();
@@ -66,7 +73,7 @@ public final class WaypointSettingsScreen extends Screen {
         drawContext.drawCenteredTextWithShadow(textRenderer, description, centerX, height / 2 - 60, 0xB8FFB8);
 
         String state = mod.isModEnabled() ? "Die Waypoints sind gerade AN" : "Die Waypoints sind gerade AUS";
-        drawContext.drawCenteredTextWithShadow(textRenderer, state, centerX, height / 2 + 82, 0xD8D8D8);
+        drawContext.drawCenteredTextWithShadow(textRenderer, state, centerX, height / 2 + 96, 0xD8D8D8);
     }
 
     @Override
@@ -108,6 +115,10 @@ public final class WaypointSettingsScreen extends Screen {
             keyButton.setMessage(waitingForKey
                 ? Text.literal("Neue Taste drücken...")
                 : Text.literal("Menü-Taste: " + mod.getMenuKeyText().getString()));
+        }
+
+        if (restartButton != null) {
+            restartButton.setMessage(Text.literal("Strahlen neu laden"));
         }
     }
 }

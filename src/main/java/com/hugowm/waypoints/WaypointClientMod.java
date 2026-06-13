@@ -422,6 +422,32 @@ public final class WaypointClientMod implements ClientModInitializer {
         return InputUtil.fromKeyCode(new KeyInput(menuKeyCode, 0, 0)).getLocalizedText();
     }
 
+    public void restartBeams() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client != null && client.player != null && client.world != null) {
+            ensureCompletedWaypointContext(client);
+        }
+
+        completedWaypointIds.clear();
+        saveCompletedWaypoints();
+        clearTrackedWaypoints(client);
+
+        if (client == null || client.player == null || client.world == null) {
+            return;
+        }
+
+        if (modEnabled) {
+            syncTrackedWaypoints(client, getCurrentWaypoints(client));
+        }
+
+        client.player.sendMessage(
+            Text.literal("[Waypoints] ")
+                .formatted(Formatting.AQUA, Formatting.BOLD)
+                .append(Text.literal("Alle Strahlen wurden zurückgesetzt.").formatted(Formatting.GREEN)),
+            false
+        );
+    }
+
     private void ensureWaypointFileExists() throws IOException {
         if (Files.exists(WAYPOINT_FILE)) {
             return;
